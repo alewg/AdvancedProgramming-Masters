@@ -49,10 +49,21 @@ public class TestWordStream {
 //        System.out.println("maximum: " + readWords(filename).mapToInt(i -> i.length()).sorted().reduce((a,b) -> b).getAsInt());
 //        long size = readWords(filename).count();
 //        System.out.println("average: " +readWords(filename).mapToInt(i -> i.length()).sum()/size);
-    
+
 
         //Problem 8
 //        System.out.println(readWords(filename).collect(Collectors.groupingBy(i -> i.length(), Collectors.counting())));
+
+        //Problem 9
+//        letters(readWords(filename).collect(Collectors.joining(""))).forEach((k, v) -> System.out.print(k.toString() + "=" + v.toString() + " "));
+
+        // Problem 10
+//        System.out.println("e="+ letters(readWords(filename).reduce((a,b) -> a.concat(b) ).get()).get('e'));
+
+        //Problem 11
+
+        //Problem 12
+
     }
 
 
@@ -71,9 +82,18 @@ public class TestWordStream {
         return s.equals(new StringBuilder(s).reverse().toString()) ? true : false;
     }
 
+    //Problem 9
     public static Map<Character, Integer> letters(String s) {
         Map<Character, Integer> res = new TreeMap<>();
-        // TO DO: Implement properly
+        s = s.toLowerCase();
+        for (int i = 0; i<s.length();i++){
+            if(!Character.isLetter(s.charAt(i)))
+                continue;
+            if(!res.containsKey(s.charAt(i)))
+                res.put(s.charAt(i), 1);
+            else
+                res.put(s.charAt(i), res.get(s.charAt(i))+1);
+        }
         return res;
     }
 }
