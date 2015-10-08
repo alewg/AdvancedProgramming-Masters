@@ -49,7 +49,7 @@ public class TestWordStream {
 //        System.out.println("maximum: " + readWords(filename).mapToInt(i -> i.length()).sorted().reduce((a,b) -> b).getAsInt());
 //        long size = readWords(filename).count();
 //        System.out.println("average: " +readWords(filename).mapToInt(i -> i.length()).sum()/size);
-
+    
 
         //Problem 8
 //        System.out.println(readWords(filename).collect(Collectors.groupingBy(i -> i.length(), Collectors.counting())));

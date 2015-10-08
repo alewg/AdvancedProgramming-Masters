@@ -27,9 +27,9 @@
         <entry file="file://$PROJECT_DIR$/src/TestWordStream.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.62184876">
-              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
               <folding>
-                <element signature="e#0#2643#0" expanded="true" />
+                <element signature="e#0#2647#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
@@ -503,12 +503,12 @@
       <created>1444298893477</created>
       <option name="number" value="Default" />
       <updated>1444298893477</updated>
-      <workItem from="1444298896781" duration="11006000" />
+      <workItem from="1444298896781" duration="11163000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11006000" />
+    <option name="totallyTimeSpent" value="11163000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="49" y="24" width="1551" height="876" extended-state="6" />
@@ -572,9 +572,9 @@
     <entry file="file://$PROJECT_DIR$/src/TestWordStream.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.62184876">
-          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <caret line="51" column="4" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="4" />
           <folding>
-            <element signature="e#0#2643#0" expanded="true" />
+            <element signature="e#0#2647#0" expanded="true" />
             <element signature="imports" expanded="true" />
           </folding>
         </state>
