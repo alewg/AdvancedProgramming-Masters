@@ -5,6 +5,7 @@
 // THIS VERSION IS MISSING CRUCIAL PARTS OF THE PUZZLE SOLVER AND
 // PUZZLE GENERATOR; THESE ARE TO BE DEVELOPED IN THE MINI-PROJECT
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
