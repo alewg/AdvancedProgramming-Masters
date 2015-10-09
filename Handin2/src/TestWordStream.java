@@ -60,10 +60,12 @@ public class TestWordStream {
         // Problem 10
 //        System.out.println("e="+ letters(readWords(filename).reduce((a,b) -> a.concat(b) ).get()).get('e'));
 
+
         //Problem 11
+        //Not solved
 
         //Problem 12
-
+        //Not solved
     }
 
 
