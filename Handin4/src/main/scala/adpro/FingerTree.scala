@@ -30,12 +30,11 @@ object data {
     def reduceL[A,B] (opl: (B,A) => B) (b: B, fa: F[A]) :B
 
     // page 3
-
-    // def toList[A] (fa: F[A]) :List[A] = ...
+    //in Haskell : means prepend
+    def toList[A] (fa: F[A]) :List[A] = reduceR[A, List[A]]((a,b)=> a::b) (fa, Nil)
 
     // page 6
-    //
-    // def toTree[A] (fa :F[A]) :FingerTree[A] = ...
+    //def toTree[A] (fa :F[A]) :FingerTree[A] = reduceR[A, FingerTree[A]]((a,b)=> b.addR(a))(fa, Empty())
   }
 
   // Types for Finger trees after Hinze and Pattersoni (page 4)
@@ -45,7 +44,7 @@ object data {
   sealed trait Node[+A] {
 
     // uncomment the delagation once Node.toList is implemented
-    //
+
     // def toList :List[A] = Node.toList (this)
   }
 
@@ -58,14 +57,14 @@ object data {
     // the operations both as methods and functions.
     // Uncomment them once you have implemented the corresponding functions.
 
-    // def addL[B >:A] (b: B) :FingerTree[B] = FingerTree.addL (b,this)
-    // def addR[B >:A] (b: B) :FingerTree[B] = FingerTree.addR (this,b)
-    // def toList :List[A] = FingerTree.toList (this)
-
-    // def headL :A = FingerTree.headL (this)
-    // def tailL :FingerTree[A] = FingerTree.tailL (this)
-    // def headR :A = FingerTree.headR (this)
-    // def tailR :FingerTree[A] = FingerTree.tailR (this)
+//    def addL[B >:A] (b: B) :FingerTree[B] = FingerTree.addL (b,this)
+//    def addR[B >:A] (b: B) :FingerTree[B] = FingerTree.addR (this,b)
+//    def toList :List[A] = FingerTree.toList (this)
+//
+//     def headL :A = FingerTree.headL (this)
+//     def tailL :FingerTree[A] = FingerTree.tailL (this)
+//     def headR :A = FingerTree.headR (this)
+//     def tailR :FingerTree[A] = FingerTree.tailR (this)
 
     // page 7 (but this version uses polymorphis for efficiency, so we can
     // implement it differently; If you want to follow the paper closely move them to
@@ -125,8 +124,9 @@ object data {
 
     // page 3, top
     //
-    // def reduceR[A,Z] (opr: (A,Z) => Z) (d: Digit[A], z: Z) :Z = ...
-    // def reduceL[A,Z] (opl: (Z,A) => Z) (z: Z, d: Digit[A]) :Z = ...
+     def reduceR[A,Z] (opr: (A,Z) => Z) (d: Digit[A], z: Z) :Z = d.foldRight(z)(opr)
+
+     def reduceL[A,Z] (opl: (Z,A) => Z) (z: Z, d: Digit[A]) :Z = d.foldLeft(z)(opl)
 
     // Digit inherits toTree from Reduce[Digit] that we will also apply to other
     // lists, but this object is a convenient place to put it (even if not all
@@ -156,10 +156,18 @@ object data {
 
   object FingerTree { // extends Reduce[FingerTree] { // uncomment once the interface is implemented
 
-    // page 5
-    // def reduceR[A,Z] (opr: (A,Z) => Z) (t: FingerTree[A], z: Z) :Z = ...
-
-    // def reduceL[A,Z] (opl: (Z,A) => Z) (z: Z, t: FingerTree[A]) :Z = ...
+//    // page 5
+//    def reduceR[A,Z] (opr: (A,Z) => Z) (t: FingerTree[A], z: Z) :Z = t match{
+//      case Empty => z
+//      case Single(x) => opr(x,z)
+//      case Deep(pr, m, sf) => reduceR(opr)(pr,(reduceR((a,b)=>reduceR(opr)(a,b))(m, reduceR(opr)(sf, z))) ) //TODO finish implementation
+//    }
+//
+//     def reduceL[A,Z] (opl: (Z,A) => Z) (z: Z, t: FingerTree[A]) :Z = t match {
+//       case Empty =>z
+//       case Single(x) => opl(z,x)
+//       case Deep(pr, m, sf) => z //TODO finish implementation
+//     }
 
     // page 5 bottom (the left triangle); Actually we could use the left
     // triangle in Scala but I am somewhat old fashioned ...

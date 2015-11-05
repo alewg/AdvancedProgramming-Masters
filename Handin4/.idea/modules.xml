@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Handin4.iml" filepath="$PROJECT_DIR$/Handin4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/handin4.iml" filepath="$PROJECT_DIR$/.idea/modules/handin4.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/handin4-build.iml" filepath="$PROJECT_DIR$/.idea/modules/handin4-build.iml" />
     </modules>
   </component>
