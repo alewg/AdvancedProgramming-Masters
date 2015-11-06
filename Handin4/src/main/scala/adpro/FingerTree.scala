@@ -193,7 +193,7 @@ object data {
       case Empty() => Single(a)
       case Single(b) => Deep[A](List(a), Empty(), List(b))
       case Deep(List(b,c,d,e),m, sf) => Deep(List(a,b), m.addL(Node3(c,d,e)), sf)
-      case Deep(pr, m, sf) => Deep[A](pr++List(a),m, sf)
+      case Deep(pr, m, sf) => Deep[A](List(a)++pr,m, sf)
     }
 
     // page 6
@@ -214,8 +214,11 @@ object data {
     // page 6
     //
     // A smart constructor that allows pr to be empty
-     def deepL[A] (pr: Digit[A], m: FingerTree[Node[A]], sf: Digit[A]) :FingerTree[A] = pr match{
-      case Nil => Deep(Nil, m, sf)
+     def deepL[A] (pr: Digit[A], m: FingerTree[Node[A]], sf: Digit[A]) :FingerTree[A] = pr match {
+      case List() => m match {
+                    case NilTree => //create tree from digit.
+                    case ConsL (a, m) =>
+        }
       case _ => Deep(pr,m,sf)
     }
 
