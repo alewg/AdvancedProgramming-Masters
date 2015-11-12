@@ -108,12 +108,13 @@ object data {
 
   object NilTree { // we use the same extractor for both left and right views
 //   def unapply[A] (t: FingerTree[A]) :Boolean = t match {
-//
-//    }
+//      case Empty() => true
+//      case _ => false
+//   }
   }
 
   object ConsL {
-    // def unapply[A] (t: FingerTree[A]) :Option[(A,FingerTree[A])] = ...
+//   def unapply[A] (t: FingerTree[A]) :Option[(A,FingerTree[A])] = Some(FingerTree.headL(t),t)
   }
 
   object ConsR {
@@ -217,12 +218,18 @@ object data {
      def deepL[A] (pr: Digit[A], m: FingerTree[Node[A]], sf: Digit[A]) :FingerTree[A] = pr match {
       case List() => viewL(m) match {
                     case NilTree() => Digit.toTree(sf)
-                    case ConsL (a, m) => Deep(Node.toList(a), m, sf)
+                    case ConsL(a, m) => Deep(Node.toList(a), m, sf)
         }
       case _ => Deep(pr,m,sf)
     }
 
-    // def deepR[A] ... = ...
+     def deepR[A] (pr: Digit[A], m: FingerTree[Node[A]], sf: Digit[A]) :FingerTree[A] = sf match {
+       case List() => viewL(m) match {
+         case NilTree() => Digit.toTree(pr)
+         case ConsL(a, m) => Deep(pr, m, Node.toList(a))
+       }
+       case _ => Deep(pr,m,sf)
+     }
 
     // page 7
     def headL[A](t:FingerTree[A]) : A = viewL(t) match {
