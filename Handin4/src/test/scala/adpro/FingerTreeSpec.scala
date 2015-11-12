@@ -20,12 +20,12 @@ import language.implicitConversions
 class FingerTreeSpecWasowski extends FlatSpec with Checkers {
 
   import adpro.data._
-  import adpro.data.FingerTree._
+import adpro.data.FingerTree._
 
   // Generator of arbitrary trees of given size for scala check (you can use it
   // in your properties)
 
-  // def fingerTreeOfN[A] (n: Int, gen: Gen[A]) :Gen[FingerTree[A]] = ...
+ def fingerTreeOfN[A] (n: Int, gen: Gen[A]) :Gen[FingerTree[A]] = Gen.listOfN(n,gen).map(Digit.toTree)
   // generate it using Gen.listOfN of Integers between 0 and 1000, and then map
   // it to finger trees using toTree.
 
@@ -34,13 +34,13 @@ class FingerTreeSpecWasowski extends FlatSpec with Checkers {
   // Pick up a generated integer n btw 0 and 100 and then use it to generate a
   // tree of this size using fingerTreeOfN (can be done using flatMap or for
   // comprehensions).
-  // def fingerTree[A] (gen: Gen[A]) :Gen[FingerTree[A]] = ...
+  def fingerTree[A] (gen: Gen[A]) :Gen[FingerTree[A]] = fingerTreeOfN(100,gen).flatMap(x => FingerTree.toTree(x))
 
   // The same as above but as an instance of Arbitrary
   // Uncomment to make available once you have the fingerTree function
   //
-  // implicit def arbFingerTree[A] (implicit arb: Arbitrary[A]) =
-  //   Arbitrary[FingerTree[A]](fingerTree[A] (arbitrary[A]))
+   implicit def arbFingerTree[A] (implicit arb: Arbitrary[A]) =
+     Arbitrary[FingerTree[A]](fingerTree[A] (arbitrary[A]))
 
 
 
@@ -74,44 +74,45 @@ class FingerTreeSpecWasowski extends FlatSpec with Checkers {
   behavior of "addL"
 
   it should "produce a queue containing the inserted element" in {
-    // assert(Empty().addL(42).toList == List(42))
+    val l = List(1,2,3,4,5,6,7,8,9,10)
+    println(Digit.toTree(l).toString)
+    assert(Digit.toTree(l).toList == l)
   }
 
-  // it should "produce a queue containing the inserted elements" in check {
-    // forAll (Gen.listOfN(100, Gen.choose[Int](0,1000))) {
-    //   (l :List[Int]) =>
-    //     l.foldRight[FingerTree[Int]] (Empty()) (FingerTree.addL).toList == l
-    // }
-  // }
+   it should "produce a queue containing the inserted elements 2" in check {
+    forAll (Gen.listOfN(100, Gen.choose[Int](0,1000))) { (l :List[Int]) =>
+         l.foldRight[FingerTree[Int]] (Empty()) (FingerTree.addL).toList == l
+     }
+   }
 
-  behavior of "addR"
-
-  // ...
+//  behavior of "addR"
+//
+//  // ...
 
   behavior of "toTree"
 
-  // it should "be an identitity on trees" in check {
-    // forAll (fingerTreeOfN(100, Gen.choose[Int](0,1000))) {
-    //   (t :FingerTree[Int]) => toTree (t) == t
-    // }
-  // }
+   it should "be an identitity on trees" in check {
+     forAll (fingerTreeOfN(100, Gen.choose[Int](0,1000))) {
+       (t :FingerTree[Int]) => toTree (t) == t
+     }
+   }
 
   behavior of "left views (extractors)"
 
   // the tests can be easily rewritten to paper-style views
 
   it should "be NilTree on Empty" in {
-    // Empty() match {
-    //   case NilTree () => assert(Empty().empty)
-    //   case _ => fail()
-    // }
+     Empty() match {
+       case NilTree () => assert(Empty().empty)
+       case _ => fail()
+     }
   }
 
   it should "be ConsL(_,Nil) on Single" in {
-    // Single(42) match {
-    //   case ConsL(_,NilTree()) => assert(Single(42).nonEmpty)
-    //   case _ => fail()
-    // }
+     Single(42) match {
+       case ConsL(_,NilTree()) => assert(Single(42).nonEmpty)
+       case _ => fail()
+     }
   }
 
   // it should "be ConsL(_,Consl(_,_)) on any tree larger than 3" in check {
@@ -132,7 +133,7 @@ class FingerTreeSpecWasowski extends FlatSpec with Checkers {
     // }
   // }
 
-  behavior of "right views"
+//  behavior of "right views"
 
   // ...
 
