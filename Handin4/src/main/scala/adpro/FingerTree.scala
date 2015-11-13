@@ -1,5 +1,5 @@
 package adpro
-import scala.language.higherKinds
+
 
 // The implementation is based on Section 3 of the paper.
 //
@@ -70,8 +70,14 @@ object data {
     // implement it differently; If you want to follow the paper closely move them to
     // FingerTree object and delegate the methods, so my tests still work.
     //
-    // def empty :Boolean = ...
-    // def nonEmpty :Boolean = ...
+    def empty :Boolean = this match {
+      case Empty() => true
+      case _ => false
+    }
+    def nonEmpty :Boolean = this match {
+      case Empty() => false
+      case _ => true
+    }
   }
   case class Empty () extends FingerTree[Nothing] {
 
@@ -204,7 +210,6 @@ object data {
       case Deep(pr, m, sf) => Deep(pr, m, sf ++ Digit(a))
     }
 
-
     // page 6
     //
     // This is a direct translation of view to Scala. You can replace it later
@@ -311,4 +316,6 @@ object data {
  *
  * Finally summarize your conclusion in approximately 100 words.
  */
+
+
 
