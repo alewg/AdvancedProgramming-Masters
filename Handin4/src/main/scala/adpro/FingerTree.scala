@@ -301,7 +301,18 @@ object data {
  *
  * Then report the string numbers in the table like the above
  *
+ * FingerTreeList
  * Size of List \ Size of String | short | medium | very long
+ * ----------------------------------------------------------
+ * enter list size               |       |        |
+ * ----------------------------------------------------------
+ * enter list size               |       |        |
+ * ----------------------------------------------------------
+ * enter list size               |       |        |
+ * ----------------------------------------------------------
+ *
+ * DoubleLinkedList
+ *  Size of List \ Size of String | short | medium | very long
  * ----------------------------------------------------------
  * enter list size               |       |        |
  * ----------------------------------------------------------
@@ -315,6 +326,71 @@ object data {
  * short/medium/very-long above with concrete numbers.
  *
  * Finally summarize your conclusion in approximately 100 words.
+ *
+ *-------------------------------------------------------------------------------
+ *
+ * Solution:
+ *
+ * Integer lists
+ *
+ * The test results that are listed bellow are measurements of property testing of
+ * operations; add left, add right, pop left, pop right. It means that all
+ * operations were applied as many times on the list as the size of the list.
+ * Since we used forAll, we applied the test 100 iterations(default amount of forAll).
+ * The runtime on the lists below were averaged. Thus, the values were divided by 100.
+ * The measurements were not performed on DoubleLinkedList with size of 10000 because
+ * the add left and add right operations already took significant amount of
+ * time on lists of size 1000.
+ *
+ * Size | FingerTree time | DoubleLinkedList
+ * -----------------------------------------
+ * 10   |       2.89 ms    |      1.16 ms
+ * -----------------------------------------
+ * 100  |       3.16 ms    |      1.59 ms
+ * -----------------------------------------
+ * 1000 |       8.62 ms    |  3_913.45 ms
+ * -----------------------------------------
+ * 10000|      33.62 ms    |       -
+ * -----------------------------------------
+ *
+ * String lists
+ *
+ * As before, we used forAll to run the test on a list 100 times and afterwards we
+ * divide the result by 100 to get the average of the running time.
+ * As before, we ran all add and remove to the left and to the right methods of the list.
+ * 
+ * We tried measuring the operations add left and right and remove left and right on a list of 
+ * size 1000, and run it as other operations, 100 times. However, the process went terrible, 
+ * the test ran for more than 30 min, thus we stopped it prematurley and did not documented
+ * the running time.
+ * 
+ *
+ *FingerTreeList
+ * Size of List \ Size of String |   10    |  1000   | 100000
+ * ----------------------------------------------------------
+ *        10                     | 2.48 ms | 0.59 ms | 0.32 ms
+ * ----------------------------------------------------------
+ *       100                     | 0.75 ms | 0.55 ms | 1.13 ms
+ * ----------------------------------------------------------
+ *      1000                     | 1.85 ms | 0.69 ms | 0.82 ms
+ * ----------------------------------------------------------
+ *
+ * DoubleLinkedList
+ * Size of List \ Size of String |    10    |   1000   | 100000
+ * ----------------------------------------------------------
+ *        10                     |  0.58 ms |  0.21 ms | 0.25 ms
+ * ----------------------------------------------------------
+ *       100                     | 33.24 ms | 30.92 ms | 29.5 ms
+ * ----------------------------------------------------------
+ *      1000                     |     ~    |    ~     |     ~
+ * ----------------------------------------------------------
+ *
+ *
+ * Conculsion:
+ * As we can see, DoubleLikedList perfroms quite terrible on large data sets. 
+ * At some instances we were not been able to measure it at all. 
+ * The same could not be said about FingerTreeList. It performed quite well even 
+ * on large data sets.  
  */
 
 
