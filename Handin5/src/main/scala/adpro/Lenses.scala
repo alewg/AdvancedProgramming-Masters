@@ -172,11 +172,11 @@ object Lenses {
   //
   // a) design a lense that accesses zipcode from Address objects:
 
-   val _zipcode: Lens[Address, ZipCode] = Lens[Address,ZipCode](_.zipcode)(z => a => a)
+   val _zipcode: Lens[Address, ZipCode] = Lens[Address, ZipCode](_.zipcode)(z => a => a.copy(zipcode = z,a.country))
 
   // b) design a lense that accesses the students collection from university:
 
-   val _students: Lens[University, Students] = Lens[University, Students](_.students) (s => a => a)
+   val _students: Lens[University, Students] = Lens[University, Students](_.students) (s => a => a.copy(students = s))
 
   // c) Use the following index lense (name)  from Monocle:
 
@@ -189,9 +189,9 @@ object Lenses {
   // Use lenses compositin to update itu the same way as above but in a clearer
   // way (use the infix binary operator ^|-? to compose a lense with an
   // optional, and use ^|-> to compose the optional with a lense).
+  val itu2 :University = (_students ^|-? index("Alex") ^|-> _zipcode).modify(_=>"9100")(itu)
 
-  val itu2 :University = (_students ^-? index("Alex") ^-> _zipcode).modify(itu)("9100")
-
+  val a = null
   // There is a test in LensesSpec to test whether what you have built behaves
   // as expected.
   //
@@ -208,7 +208,9 @@ object Lenses {
   // problem in Section 2, and shows the lens solution in Listing 9.  Monocle
   // has a modify method in Lens[A.B]:
   //
-  //    modify : (B => B) => A => A
+  // modify : (B => B) => A => A
+
+
   //
   // It works almost like get and set at the same time (so you use modify if you
   // would otherwise like to get a value, and then make a modification to this
