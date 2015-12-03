@@ -62,7 +62,7 @@ object Lenses {
   val l2 = Lens[String, (String, Int)]((_, 0))(s => _ => s._1)
 
   // page 7 in Foster et al.
- val l3 = Lens[(String, Int), String](_._1)(s => s1 => if (s == s1._1) (s, s1._2) else (s, s1._2 + 1))
+  val l3 = Lens[(String, Int), String](_._1)(s => s1 => if (s == s1._1) (s, s1._2) else (s, s1._2 + 1))
 
 
   // Exercise 1: Write PutGet law as a property test for arbitrary lenses from
@@ -89,17 +89,17 @@ object Lenses {
   // use the infix constructor in this exercise, instead of Either.  All the
   // imports in the project are already set up.
 
-  def set[A](a:A)(a1:A \/ A): A \/ A = a1 match {
+  def set[A](a: A)(a1: A \/ A): A \/ A = a1 match {
     case -\/(a1) => -\/(a)
     case \/-(a1) => \/-(a)
   }
 
-  def get[A](a:A\/A): A = a match {
+  def get[A](a: A \/ A): A = a match {
     case -\/(a) => a
     case \/-(a) => a
   }
 
-  def codiag[A]: Lens[A \/ A, A] = Lens[A\/A,A] (get)(set)
+  def codiag[A]: Lens[A \/ A, A] = Lens[A \/ A, A](get)(set)
 
   //
   // Some codiag tests are found in LensesSpec.  Test your solution.
@@ -117,9 +117,10 @@ object Lenses {
   //
   // Translate morris' implementation of codiag to Monocle and test it.
 
-   def codiag1[A]: Lens[A \/ A, A] = {
-     lensChoice.choice(Lens.id, Lens.id)
-   }
+  def codiag1[A]: Lens[A \/ A, A] = {
+    lensChoice.choice(Lens.id, Lens.id)
+  }
+
   //
   // Test this implementation uncommenting tests in LensesSpec.scala
 
@@ -157,7 +158,7 @@ object Lenses {
   // the copy.  For instance itu.copy (students = itu.students.tail) creates a
   // copy of ITU without the first student.
 
-   val itu1 = itu.copy(itu.students.updated("Alex", Address("9100", itu.students.get("Alex").get.country)))
+  val itu1 = itu.copy(itu.students.updated("Alex", Address("9100", itu.students.get("Alex").get.country)))
 
   // There is a test in LensesSpec to check whether  you did what expected.
   //
@@ -172,15 +173,15 @@ object Lenses {
   //
   // a) design a lense that accesses zipcode from Address objects:
 
-   val _zipcode: Lens[Address, ZipCode] = Lens[Address, ZipCode](_.zipcode)(z => a => a.copy(zipcode = z,a.country))
+  val _zipcode: Lens[Address, ZipCode] = Lens[Address, ZipCode](_.zipcode)(z => a => a.copy(zipcode = z, a.country))
 
   // b) design a lense that accesses the students collection from university:
 
-   val _students: Lens[University, Students] = Lens[University, Students](_.students) (s => a => a.copy(students = s))
+  val _students: Lens[University, Students] = Lens[University, Students](_.students)(s => a => a.copy(students = s))
 
   // c) Use the following index lense (name)  from Monocle:
 
-  index("Alex") :Optional[Map[String,Address],Address]
+  index("Alex"): Optional[Map[String, Address], Address]
 
   // This lens focuses our view on the entry in a map with a given index.
   // Optional in the Monocle terminology is a partial lense in the terminology
@@ -189,9 +190,8 @@ object Lenses {
   // Use lenses compositin to update itu the same way as above but in a clearer
   // way (use the infix binary operator ^|-? to compose a lense with an
   // optional, and use ^|-> to compose the optional with a lense).
-  val itu2 :University = (_students ^|-? index("Alex") ^|-> _zipcode).modify(_=>"9100")(itu)
+  val itu2: University = (_students ^|-? index("Alex") ^|-> _zipcode).modify(_ => "9100")(itu)
 
-  val a = null
   // There is a test in LensesSpec to test whether what you have built behaves
   // as expected.
   //
@@ -209,8 +209,6 @@ object Lenses {
   // has a modify method in Lens[A.B]:
   //
   // modify : (B => B) => A => A
-
-
   //
   // It works almost like get and set at the same time (so you use modify if you
   // would otherwise like to get a value, and then make a modification to this
@@ -232,16 +230,16 @@ object Lenses {
   // need to compose:
   //
   // - a lense that extracts the students collection from a University
-  // (_students)
+  //(_students)
   //
   // - a traversable that extracts all objects from a collection (each)
   //
   // - a lense that extract the country from an address object (_address, you
   // will need to write that one, as we did not create it yet).
 
-  //  val _country :Lens[Address,String] = TODO (1 line)
+  val _country: Lens[Address, String] = Lens[Address, String](_.country)(c => a => a.copy(a.zipcode, country = c))
   //
-  //  val itu3 :University = ... TODO (1 line)
+  val itu3: University = (_students ^|->> (each) ^|-> _country).modify(_.toUpperCase)(itu)
 
   // LensesSpec.scala has a test to see if you succeeded.
   //
@@ -250,7 +248,9 @@ object Lenses {
   // between the code in the test and the code above that influences this? Write
   // the answer below:
   //
-  // ... ... ...
+  // The code in the test only iterate through the values and compare if they are uppercase,
+  // while Lenses actually are able to change the value, and keeping the original structure.
+  // If you want like to modify the object without lenses, you would need to use the copy method.
 
 
   // Exercise 7. Use filterIndex(p) to only capitalize city names of the
@@ -258,9 +258,11 @@ object Lenses {
   // traversal, like 'each' above. Recall that ^|->> is used to compose (append)
   // a traversal and ^|-> is used to append a lense.
 
-  // val itu4 = ... ca. 3 lines TODO
+  val itu4: University = (_students ^|->> filterIndex((x: String) => x.startsWith("A")) ^|-> _country).modify(_.toUpperCase)(itu)
 
-  // println (itu4) [cheap testing]
+  println(itu4)
+
+  //[cheap testing]
 
 
   // Exercise 8.  We are returning to construction of basic lenses.  Implement a
@@ -272,18 +274,23 @@ object Lenses {
   // get: List[A] => Option[A]
   // set: A => List[A] => List[A]
   //
-  // def setIth[A] (n: Integer) :Optional[List[A],A] = ... (1-2 lines)
+  def setIth[A](n: Integer): Optional[List[A], A] =
+    Optional[List[A], A](_.lift(n-1))(a => l => if (l.size < n) l else l.updated(n-1, a))
 
 
   // In the above you will need to decide what to do with the setter if n is
-  // greater than the length of the list.  One option is to do nothing, just
+  // greater than the length of the list.  One option is to do nothing, jus
   // ignore the setting :).  Another alternative is to provide a default
   // element, and extend the list approprietly. In such case we obtain a total
   // lense. Try this too:
 
-  // def setIth1[A] (n: Integer, default: A) :Lens[List[A],A] = .. TODO ca. 12 lines
+  def setIth1[A](n: Integer, default: A): Lens[List[A], A] =
+    Lens[List[A], A](_.lift(n-1).orElse(Some(default)).get)(a => l => if(l.size<n) {
+      (l ++ List.fill((n - l.size))(default)).updated(n-1,a)
 
-
+    }else
+      l.updated(n-1, a)
+    )
   // Exercise 9. To test setIth (above) you will also need to implement new
   // PutGet, GetPut and PutPut laws that work for Optionals. Add the tests to
   // LensesSpec.scala.  Carefully consider the equality of results as used in
@@ -300,10 +307,10 @@ object Lenses {
   // For a simple example, use sethIth below to increment the third element on a
   // list list0
 
-  // val list0 = List[Int](1,2,3,4,5,6)
-  // val list1 = ... TODO
-  // println (list0)
-  // println (list1)
+   val list0 = List[Int](1,2,3,4,5,6)
+   val list1 = (setIth(3)).modify((a:Int)=>a+1)(list0)
+   println (list0)
+   println (list1)
 
 }
 
