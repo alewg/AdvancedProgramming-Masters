@@ -18,56 +18,62 @@ public class TestWordStream {
         String filename = "/usr/share/dict/words";
 
 
-        // System.out.println(readWords(filename).count());
+        System.out.println(readWords(filename).count());
 
         //Problem 2
-//        readWords(filename).limit(100).forEach(i -> System.out.println(i));
+        readWords(filename).limit(100).forEach(i -> System.out.println(i));
 
         //Problem 3
-//        readWords(filename).filter(x -> (x.length() >= 22)).forEach(i -> System.out.println(i));
+        readWords(filename).filter(x -> (x.length() >= 22)).forEach(i -> System.out.println(i));
 
         //Problem 4
-//        System.out.println(readWords(filename).filter(x -> (x.length() >= 22)).findAny().get());
+        System.out.println(readWords(filename).filter(x -> (x.length() >= 22)).findAny().get());
 
 
         //Problem 5
-//        startTime = System.nanoTime();
-//        readWords(filename).filter(i -> isPalindrome(i));   //Problem 5
-//        stopTime = System.nanoTime();
-//        System.out.println("sequential run time in nano sec: " + (stopTime - startTime));
+        startTime = System.nanoTime();
+        readWords(filename).filter(i -> isPalindrome(i));   //Problem 5
+        stopTime = System.nanoTime();
+        System.out.println("sequential run time in nano sec: " + (stopTime - startTime));
 
 
         // Problem 6
-//        startTime = System.nanoTime();
-//        readWords(filename).parallel().filter(i -> isPalindrome(i));
-//        stopTime = System.nanoTime();
-//        System.out.println("parallel run time in nano sec: "+ (stopTime-startTime));
+        startTime = System.nanoTime();
+        readWords(filename).parallel().filter(i -> isPalindrome(i));
+        stopTime = System.nanoTime();
+        System.out.println("parallel run time in nano sec: " + (stopTime - startTime));
 
 
         //Problem 7
-//        System.out.println("minimum: " + readWords(filename).mapToInt(i -> i.length()).sorted().findFirst().getAsInt());
-//        System.out.println("maximum: " + readWords(filename).mapToInt(i -> i.length()).sorted().reduce((a,b) -> b).getAsInt());
-//        long size = readWords(filename).count();
-//        System.out.println("average: " +readWords(filename).mapToInt(i -> i.length()).sum()/size);
-
+        System.out.println("minimum: " + readWords(filename).mapToInt(i -> i.length()).sorted().findFirst().getAsInt());
+        System.out.println("maximum: " + readWords(filename).mapToInt(i -> i.length()).sorted().reduce((a, b) -> b).getAsInt());
+        long size = readWords(filename).count();
+        System.out.println("average: " + readWords(filename).mapToInt(i -> i.length()).sum() / size);
+   
 
         //Problem 8
-//        System.out.println(readWords(filename).collect(Collectors.groupingBy(i -> i.length(), Collectors.counting())));
+        System.out.println(readWords(filename).collect(Collectors.groupingBy(i -> i.length(), Collectors.counting())));
 
         //Problem 9
-//        letters(readWords(filename).collect(Collectors.joining(""))).forEach((k, v) -> System.out.print(k.toString() + "=" + v.toString() + " "));
+        letters(readWords(filename).collect(Collectors.joining(""))).forEach((k, v) -> System.out.print(k.toString() + "=" + v.toString() + " "));
+
 
         // Problem 10
-//        System.out.println("e="+ letters(readWords(filename).reduce((a,b) -> a.concat(b) ).get()).get('e'));
+        System.out.println("\ne=" + letters(readWords(filename).reduce((a, b) -> a.concat(b)).get()).get('e'));
 
 
         //Problem 11
-        //Not solved
+        startTime = System.nanoTime();
+        readWords(filename).collect(Collectors.groupingBy(i -> letters(i))).forEach((k, v) -> System.out.println(k + " " + v));
+        stopTime = System.nanoTime();
+        System.out.println("sequential run time in nano sec: " + (stopTime - startTime));
 
         //Problem 12
-        //Not solved
+        startTime = System.nanoTime();
+        readWords(filename).parallel().collect(Collectors.groupingBy(i -> letters(i))).forEach((k, v) -> System.out.println(k + " " + v));
+        stopTime = System.nanoTime();
+        System.out.println("parallel run time in nano sec: " + (stopTime - startTime));
     }
-
 
     //Problem 1
     public static Stream<String> readWords(String filename) {
@@ -88,13 +94,13 @@ public class TestWordStream {
     public static Map<Character, Integer> letters(String s) {
         Map<Character, Integer> res = new TreeMap<>();
         s = s.toLowerCase();
-        for (int i = 0; i<s.length();i++){
-            if(!Character.isLetter(s.charAt(i)))
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isLetter(s.charAt(i)))
                 continue;
-            if(!res.containsKey(s.charAt(i)))
+            if (!res.containsKey(s.charAt(i)))
                 res.put(s.charAt(i), 1);
             else
-                res.put(s.charAt(i), res.get(s.charAt(i))+1);
+                res.put(s.charAt(i), res.get(s.charAt(i)) + 1);
         }
         return res;
     }
