@@ -279,10 +279,13 @@ object ExceptionEvaluatorWithMonads {
 
       // flatMap is (*) in [Wadler]
       // TODO: implement flatMap
-      def flatMap[B](k: A => M[B]): M[B] = k(this.a)
+      def flatMap[B](k: A => M[B]): M[B] = {
+        val (x,a) = (this.o, this.a)
+        val (y,b) = (k(this.a).o, k(this.a).a)
+        M[B](x+y, b)
+      }
 
-      //we DID NOT implemented flatMap fully. The current implementation is just to avoid compilation errors.
-      // IT IS NOT VALID IMPLEMENTATION
+
 
 
       def map[B](k: A => B): M[B] = M[B] (this.o, k(this.a))
